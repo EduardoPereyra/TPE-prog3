@@ -1,5 +1,11 @@
 package main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -58,5 +64,71 @@ public class Main {
 			break;
 		}
 	}
+	
 
+	    public static void reader(String path){ //diferentes readers para cada clase
+	        String csvFile = path +"/dataset.csv";
+	        String line = "";
+	        String cvsSplitBy = ";";
+
+	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+	            while ((line = br.readLine()) != null) {
+
+	                String[] items = line.split(cvsSplitBy);
+/*	                items[0] --> nombre del aeropuerto
+	                items[1] --> ciudad
+	                items[2] --> pais
+*/	                // ---------------------------------------------
+	                // Poner el codigo para cargar los datos
+	                // ---------------------------------------------
+
+	            }
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	
+		public static void write(String path) {
+			BufferedWriter bw = null;
+			try {
+				File file = new File( path+ "/salida.csv");
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+
+				FileWriter fw = new FileWriter(file);
+				bw = new BufferedWriter(fw);
+
+				// Escribo la primer linea del archivo
+				String contenidoLinea1 = "Usuario1;Tiempo1";
+				bw.write(contenidoLinea1);
+				bw.newLine();
+
+				// Escribo la segunda linea del archivo
+				String contenidoLinea2 = "Usuario2;Tiempo2";
+				bw.write(contenidoLinea2);
+				bw.newLine();
+				bw.write(contenidoLinea2);
+				bw.newLine();
+				bw.write(contenidoLinea2);
+				bw.newLine();
+				
+				/*
+				 *
+				 * ... 
+				 * 
+				*/
+
+			} catch (IOException ioe) {
+				ioe.printStackTrace();
+			} finally {
+				try {
+					if (bw != null)
+						bw.close();
+				} catch (Exception ex) {
+					System.out.println("Error cerrando el BufferedWriter" + ex);
+				}
+			}
+		}
 }
