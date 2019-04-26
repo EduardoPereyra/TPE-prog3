@@ -8,6 +8,9 @@ public class Ruta {
 		this.destino = destino;
 		this.info = info;
 	}
+	
+	public Ruta() {
+	}
 
 	public Aeropuerto getDestino() {
 		return destino;
@@ -20,4 +23,12 @@ public class Ruta {
 	public void setInfo(InformacionRuta info) {
 		this.info = info;
 	}
+	public void setReserva(String aerolinea, int reservas) {
+		this.info.setReservas(aerolinea, reservas);
+	}
+	
+	public String toString() {
+		return "Destino: " +this.destino.getNombre() + this.info;
+	}
+	
 }

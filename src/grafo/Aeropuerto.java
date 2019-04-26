@@ -9,7 +9,7 @@ public class Aeropuerto {
 	private String ciudad;
 	private List<Ruta> rutas;
 	
-	public Aeropuerto(String nombre, String pais, String ciudad) {
+	public Aeropuerto(String nombre, String ciudad, String pais) {
 		this.rutas = new ArrayList<>();
 		this.nombre = nombre;
 		this.pais = pais;
@@ -40,7 +40,17 @@ public class Aeropuerto {
 		return ciudad;
 	}
 	
+	public Ruta getRuta(String destino) {
+		Ruta aux = new Ruta();
+		for(int i = 0; i < this.rutas.size() ; i++) {
+			if(this.rutas.get(i).getDestino().getNombre() == destino) {
+				aux = this.rutas.get(i);
+			}
+		}
+		return aux;
+	}
+	
 	public String toString() {
-		return "\n Aeropuerto [nombre: " + this.nombre + ", pais: " + this.pais + ", ciudad: " + this.ciudad + ", rutas: " + rutas + "]";
+		return "\n Aeropuerto [Nombre: " + this.nombre + ", Pais: " + this.pais + ", Ciudad: " + this.ciudad + "]";
 	}
 }

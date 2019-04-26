@@ -18,9 +18,35 @@ public class Sistema_aeropuertos {
 		return this.aeropuertos.iterator();
 	}
 	
-	public String toString() {
-		return "\n Grafo [ vertice: " + aeropuertos.toString() + "]";
+	public void setearRuta_Aeropuerto(String aeropuerto_origen,String aeropuerto_destino, InformacionRuta info) {
+		for(int i = 0; i < this.aeropuertos.size(); i++) {
+			if(this.aeropuertos.get(i).getNombre() == aeropuerto_origen) {
+				for(int j = 0; j < this.aeropuertos.size(); j++) {
+					if(this.aeropuertos.get(j).getNombre() == aeropuerto_destino) {
+						Ruta ruta = new Ruta(this.aeropuertos.get(j), info);
+						this.aeropuertos.get(i).addArco(ruta);
+					}	
+				}
+			}
+		}
 	}
+	
+	public void setearReserva(String aeropuerto_origen, String aeropuerto_destino, String aerolinea, int reservas) {
+		for(int i = 0; i < this.aeropuertos.size(); i++) {
+			if(this.aeropuertos.get(i).getNombre() == aeropuerto_origen) {
+				if(this.aeropuertos.get(i).getRuta(aeropuerto_destino) != null) {
+					this.aeropuertos.get(i).getRuta(aeropuerto_destino).setReserva(aerolinea, reservas);					
+				}
+			}	
+		}
+	}
+	
+    public ArrayList<Aeropuerto> listarAeropuertos(){
+    	ArrayList<Aeropuerto> salida = new ArrayList<Aeropuerto>(aeropuertos);
+    	
+    	return salida;
+    }
+	
 	
 /*	public void dfs() {
 		for (Aeropuerto v : aeropuertos) {

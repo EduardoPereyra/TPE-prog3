@@ -6,15 +6,26 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
+
+import grafo.Aeropuerto;
+import grafo.InformacionRuta;
+import grafo.Sistema_aeropuertos;
 
 public class Main {
 
 	private static Scanner scanner;
 
 	public static void main(String[] args) {
+		String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
+		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); 
+		readerAeropuertos(path,trivago);
+		readerRutas(path,trivago);
+		readerReservas(path,trivago);
+
 		int opcion = menu();
-		elegirOpcion(opcion);
+		elegirOpcion(opcion,trivago);
 
 		
 	}
@@ -35,39 +46,93 @@ public class Main {
 		return opcion;
 	}
 	
-	public static void elegirOpcion(int opcion) {
+	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) {
 		System.out.println(opcion);
 		switch (opcion) {
 		case 1:
-			
+			listarAeropuertos(trivago);
 			break;
 		case 2:
-			
+			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
 			break;
 		case 3:
-			
+			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
 			break;
 		case 4:
-			
+			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
 			break;
 		case 5:
-			
+			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
 			break;
 		case 0:
-			
+				System.out.println("Gracias por utilizar nuestro sistema de aeropuertos. Vuelva pronto!");
 			break;
 
 		default:
 			System.out.println("No es un valor valido");
-			opcion = menu();
-			elegirOpcion(opcion);
 			break;
+		}
+		if(opcion != 0) {
+			opcion = menu();
+			elegirOpcion(opcion, trivago);
 		}
 	}
 	
+	    public static void readerAeropuertos(String path, Sistema_aeropuertos trivago){
+	        String csvFile = path +"\\Aeropuertos.csv";
+	        System.out.println(csvFile);
+	        String line = "";
+	        String cvsSplitBy = ";";
+	        Aeropuerto aux;
 
-	    public static void reader(String path){ //diferentes readers para cada clase
-	        String csvFile = path +"/dataset.csv";
+	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+	            while ((line = br.readLine()) != null) {
+
+	                String[] items = line.split(cvsSplitBy);
+	                aux = new Aeropuerto(items[0], items[1], items[2]);
+	                trivago.add(aux);
+	            }
+	            System.out.println("Cargado con exito.");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    public static void readerRutas(String path, Sistema_aeropuertos trivago){ 
+	        String csvFile = path +"\\Rutas.csv";
+	        System.out.println(csvFile);
+	        String line = "";
+	        String cvsSplitBy = ";";
+	        String guion = "-";
+	        String coma = ",";
+	        InformacionRuta info;
+
+	        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+	            while ((line = br.readLine()) != null) {
+
+	                String[] items = line.split(cvsSplitBy);
+	                info = new InformacionRuta(Double.parseDouble(items[2]),Boolean.parseBoolean(items[3]));
+	                items[4] = items[4].replaceAll("\\{","");
+	                items[4] = items[4].replaceAll("\\}","");
+	                String subitems[] = items[4].split(coma);
+	                for(int i = 0; i<subitems.length; i++) {
+	                	String aerolinea[] = subitems[i].split(guion);
+		                info.setAerolineas(aerolinea[0], Integer.parseInt(aerolinea[1]));
+	                }
+	                trivago.setearRuta_Aeropuerto(items[0],items[1],info);
+
+	            }
+	            System.out.println("Cargado con exito.");
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    
+	    public static void readerReservas(String path, Sistema_aeropuertos trivago){ 
+	        String csvFile = path +"\\Reservas.csv";
+	        System.out.println(csvFile);
 	        String line = "";
 	        String cvsSplitBy = ";";
 
@@ -76,14 +141,10 @@ public class Main {
 	            while ((line = br.readLine()) != null) {
 
 	                String[] items = line.split(cvsSplitBy);
-/*	                items[0] --> nombre del aeropuerto
-	                items[1] --> ciudad
-	                items[2] --> pais
-*/	                // ---------------------------------------------
-	                // Poner el codigo para cargar los datos
-	                // ---------------------------------------------
+	                trivago.setearReserva(items[0], items[1], items[2], Integer.parseInt(items[3]));
 
 	            }
+	            System.out.println("Cargado con exito.");
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
@@ -108,12 +169,7 @@ public class Main {
 				// Escribo la segunda linea del archivo
 				String contenidoLinea2 = "Usuario2;Tiempo2";
 				bw.write(contenidoLinea2);
-				bw.newLine();
-				bw.write(contenidoLinea2);
-				bw.newLine();
-				bw.write(contenidoLinea2);
-				bw.newLine();
-				
+				bw.newLine();				
 				/*
 				 *
 				 * ... 
@@ -129,6 +185,13 @@ public class Main {
 				} catch (Exception ex) {
 					System.out.println("Error cerrando el BufferedWriter" + ex);
 				}
+			}
+		}
+		
+		public static void listarAeropuertos(Sistema_aeropuertos trivago) {
+			ArrayList<Aeropuerto> aux = trivago.listarAeropuertos();
+			for(int i = 0; i < aux.size(); i++) {
+				System.out.println((i + 1) + "-" + aux.get(i).toString());
 			}
 		}
 }
