@@ -53,7 +53,6 @@ public class InformacionRuta {
 */	
 	public void getReservas(String aeropuerto_origen) {
 		//hacer un arreglo de ConsultaReservas e ir guardando en una lista
-		
 	}
 
 }
