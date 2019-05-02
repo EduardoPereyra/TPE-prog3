@@ -3,6 +3,8 @@ package grafo;
 import java.util.ArrayList;
 import java.util.List;
 
+import servicios.ConsultaReservas;
+
 public class Aeropuerto {
 	private String nombre;
 	private String pais;
@@ -10,7 +12,7 @@ public class Aeropuerto {
 	private List<Ruta> rutas;
 	
 	public Aeropuerto(String nombre, String ciudad, String pais) {
-		this.rutas = new ArrayList<>();
+		this.rutas = new ArrayList<Ruta>();
 		this.nombre = nombre;
 		this.pais = pais;
 		this.ciudad = ciudad;
@@ -40,14 +42,25 @@ public class Aeropuerto {
 		return ciudad;
 	}
 	
-	public Ruta getRuta(String destino) {
-		Ruta aux = new Ruta();
-		for(int i = 0; i < this.rutas.size() ; i++) {
-			if(this.rutas.get(i).getDestino().getNombre() == destino) {
-				aux = this.rutas.get(i);
+	
+	
+	public void setReservaRuta(String aeropuerto_destino, String aerolinea, int cantReservas) {
+		for(int i = 0; i < rutas.size() ; i++) {
+			if(rutas.get(i).getDestino().getNombre().equals(aeropuerto_destino)) {
+				rutas.get(i).setReserva(aerolinea, cantReservas);
 			}
 		}
-		return aux;
+	}
+	
+	public ArrayList<ConsultaReservas> getReservasDestino(){
+		
+		ArrayList<ConsultaReservas> reservasAeropuerto = new ArrayList<ConsultaReservas>();
+		
+		for(Ruta r : rutas) {
+			reservasAeropuerto.addAll(r.getReservas(this.nombre));
+		}
+		
+		return reservasAeropuerto;
 	}
 	
 	public String toString() {

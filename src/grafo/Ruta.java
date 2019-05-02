@@ -1,4 +1,7 @@
 package grafo;
+import java.util.ArrayList;
+
+import servicios.ConsultaReservas;
 
 public class Ruta {
 	private Aeropuerto destino;
@@ -29,6 +32,11 @@ public class Ruta {
 	
 	public String toString() {
 		return "Destino: " +this.destino.getNombre() + this.info;
+	}
+	
+	public ArrayList<ConsultaReservas> getReservas(String aeropuerto_origen) {
+		
+		return info.getInfoReservas(aeropuerto_origen, destino.getNombre());
 	}
 	
 }

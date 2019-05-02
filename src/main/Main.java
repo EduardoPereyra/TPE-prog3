@@ -12,13 +12,15 @@ import java.util.Scanner;
 import grafo.Aeropuerto;
 import grafo.InformacionRuta;
 import grafo.Sistema_aeropuertos;
+import servicios.ConsultaReservas;
 
 public class Main {
 
 	private static Scanner scanner;
 
 	public static void main(String[] args) {
-		String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
+		//String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
+		String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
 		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); 
 		readerAeropuertos(path,trivago);
 		readerRutas(path,trivago);
@@ -53,7 +55,7 @@ public class Main {
 			listarAeropuertos(trivago);
 			break;
 		case 2:
-			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
+			listarReservas(trivago);
 			break;
 		case 3:
 			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
@@ -122,6 +124,7 @@ public class Main {
 		                info.setAerolineas(aerolinea[0], Integer.parseInt(aerolinea[1]));
 	                }
 	                trivago.setearRuta_Aeropuerto(items[0],items[1],info);
+	                trivago.setearRuta_Aeropuerto(items[1], items[0], info);  //seteo la misma ruta pero de "vuelta"
 
 	            }
 	            System.out.println("Cargado con exito.");
@@ -190,6 +193,13 @@ public class Main {
 		
 		public static void listarAeropuertos(Sistema_aeropuertos trivago) {
 			ArrayList<Aeropuerto> aux = trivago.listarAeropuertos();
+			for(int i = 0; i < aux.size(); i++) {
+				System.out.println((i + 1) + "-" + aux.get(i).toString());
+			}
+		}
+		
+		public static void listarReservas(Sistema_aeropuertos trivago) {
+			ArrayList<ConsultaReservas> aux = trivago.listarReservas();
 			for(int i = 0; i < aux.size(); i++) {
 				System.out.println((i + 1) + "-" + aux.get(i).toString());
 			}

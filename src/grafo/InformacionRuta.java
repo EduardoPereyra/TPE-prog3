@@ -1,6 +1,12 @@
 package grafo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import servicios.ConsultaReservas;
 
 public class InformacionRuta {
 	private double km;
@@ -51,8 +57,22 @@ public class InformacionRuta {
 	return aerolineas;
 }
 */	
-	public void getReservas(String aeropuerto_origen) {
+	public ArrayList<ConsultaReservas> getInfoReservas(String aeropuerto_origen, String aeropuerto_destino) {
 		//hacer un arreglo de ConsultaReservas e ir guardando en una lista
+		ArrayList<ConsultaReservas> reservasSalida = new ArrayList<ConsultaReservas>();
+
+		Iterator it = reservas.entrySet().iterator();
+			
+		while(it.hasNext()) {
+			
+			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) it.next();
+			ConsultaReservas vuelo = new ConsultaReservas(aeropuerto_origen, aeropuerto_destino, entry.getKey(), entry.getValue());
+		
+			reservasSalida.add(vuelo);
+			
+		}
+		return reservasSalida;
+		
 	}
 
 }
