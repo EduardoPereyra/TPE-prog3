@@ -12,28 +12,29 @@ import java.util.Scanner;
 import grafo.Aeropuerto;
 import grafo.InformacionRuta;
 import grafo.Sistema_aeropuertos;
-import servicios.ConsultaReservas;
+import respuestas.ConsultaReservas;
+import respuestas.ConsultaVueloDirecto;
 
 public class Main {
 
 	private static Scanner scanner;
 
 	public static void main(String[] args) {
-		//String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
-		String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
-		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); 
-		readerAeropuertos(path,trivago);
-		readerRutas(path,trivago);
-		readerReservas(path,trivago);
+		String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
+		//String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
+		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); //creacion del sistema de aeropuerto
+		readerAeropuertos(path,trivago); //carga de aeropuertos
+		readerRutas(path,trivago); //carga de rutas
+		readerReservas(path,trivago); //carga de reservas
 
 		int opcion = menu();
-		elegirOpcion(opcion,trivago);
+		elegirOpcion(opcion,trivago); //menu
 
 		
 	}
 	
 	public static int menu() {
-		System.out.println("===================================");
+		System.out.println("\n\n===================================");
 		System.out.println("Ingrese una opcion: ");
 		System.out.println("1- Listar todos los aeropuertos.");
 		System.out.println("2- Listar todas las reservas realizadas.");
@@ -41,33 +42,51 @@ public class Main {
 		System.out.println("4- Servicio 2: Obtener vuelos sin aerolínea.");
 		System.out.println("5- Servicio 3: Vuelos disponibles.");
 		System.out.println("0- Salir");
-		System.out.println("===================================");
+		System.out.println("===================================\n\n");
         scanner = new Scanner(System.in);
 		int opcion;
 		opcion = scanner.nextInt();
 		return opcion;
 	}
 	
-	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) {
+	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) { //menu
 		System.out.println(opcion);
 		switch (opcion) {
 		case 1:
+			System.out.println("---Listar todos los aeropuertos---");
 			listarAeropuertos(trivago);
 			break;
 		case 2:
+			System.out.println("---Listar todas las reservas realizadas---");
 			listarReservas(trivago);
 			break;
 		case 3:
-			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
+			System.out.println("---Servicio 1: Verificar vuelo directo---");
+			System.out.println("Ingrese Aeropuerto Origen");
+			String origen = insertarString();
+			System.out.println("Ingrese Aeropuerto Destino");
+			String destino = insertarString();
+			System.out.println("Ingrese Aerolinea");
+			String aerolinea = insertarString();
+			verificarVueloDirecto(trivago,origen,destino,aerolinea);
 			break;
 		case 4:
-			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
+			System.out.println("---Servicio 2: Obtener vuelos sin aerolínea---");
+			System.out.println("Ingrese Aeropuerto Origen");
+			String origen1 = insertarString();
+			System.out.println("Ingrese Aeropuerto Destino");
+			String destino1 = insertarString();
+			System.out.println("Ingrese Aerolinea que no quiere utilizar");
+			String aerolinea1 = insertarString();
+			listarVuelosSinAerolinea(trivago,origen1,destino1,aerolinea1);
 			break;
 		case 5:
+			System.out.println("---Servicio 3: Vuelos disponibles---");
 			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
 			break;
 		case 0:
-				System.out.println("Gracias por utilizar nuestro sistema de aeropuertos. Vuelva pronto!");
+			System.out.println("---Salir---");
+			System.out.println("Gracias por utilizar nuestro sistema de aeropuertos. Vuelva pronto!");
 			break;
 
 		default:
@@ -80,7 +99,7 @@ public class Main {
 		}
 	}
 	
-	    public static void readerAeropuertos(String path, Sistema_aeropuertos trivago){
+	    public static void readerAeropuertos(String path, Sistema_aeropuertos trivago){ //carga de aeropuertos
 	        String csvFile = path +"\\Aeropuertos.csv";
 	        System.out.println(csvFile);
 	        String line = "";
@@ -101,7 +120,7 @@ public class Main {
 	        }
 	    }
 	    
-	    public static void readerRutas(String path, Sistema_aeropuertos trivago){ 
+	    public static void readerRutas(String path, Sistema_aeropuertos trivago){ //carga de rutas
 	        String csvFile = path +"\\Rutas.csv";
 	        System.out.println(csvFile);
 	        String line = "";
@@ -127,13 +146,13 @@ public class Main {
 	                trivago.setearRuta_Aeropuerto(items[1], items[0], info);  //seteo la misma ruta pero de "vuelta"
 
 	            }
-	            System.out.println("Cargado con exito.");
+	            System.out.println("Cargado con exito...");
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
 	    }
 	    
-	    public static void readerReservas(String path, Sistema_aeropuertos trivago){ 
+	    public static void readerReservas(String path, Sistema_aeropuertos trivago){ //carga de reservas
 	        String csvFile = path +"\\Reservas.csv";
 	        System.out.println(csvFile);
 	        String line = "";
@@ -191,17 +210,36 @@ public class Main {
 			}
 		}
 		
-		public static void listarAeropuertos(Sistema_aeropuertos trivago) {
+		public static void listarAeropuertos(Sistema_aeropuertos trivago) { //muestra una lista de todos los aeropuertos
 			ArrayList<Aeropuerto> aux = trivago.listarAeropuertos();
 			for(int i = 0; i < aux.size(); i++) {
 				System.out.println((i + 1) + "-" + aux.get(i).toString());
 			}
 		}
 		
-		public static void listarReservas(Sistema_aeropuertos trivago) {
+		public static void listarReservas(Sistema_aeropuertos trivago) { //lista todas las reservas de todos los aeropuertos de todas las aerolineas
 			ArrayList<ConsultaReservas> aux = trivago.listarReservas();
 			for(int i = 0; i < aux.size(); i++) {
-				System.out.println((i + 1) + "-" + aux.get(i).toString());
+				System.out.println(" Reserva : "+ (i + 1) +"\t"+ aux.get(i).toString());
 			}
+		}
+		
+		public static void verificarVueloDirecto(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) { //muestra si hay vuelo directo 
+			ConsultaVueloDirecto resultado = trivago.verificarVueloDirecto(origen, destino, aerolinea);	 						//desde un origen hacia un destino con una aerolinea
+			if(resultado != null) {
+			System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nCon la aerolinea : " 
+					+ aerolinea + "\nHay : " + resultado.getKm() + " km \nTeniendo disponibles : " + resultado.getCant_asientos() + " asientos" );
+			}else {
+				System.out.println("No hay vuelo directo.");	
+			}
+		}
+		
+		public static void listarVuelosSinAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) {
+			
+		}
+		
+		private static String insertarString() { //devuelve el string ingresado por el usuario
+	        scanner = new Scanner(System.in);
+	        return scanner.nextLine();	
 		}
 }

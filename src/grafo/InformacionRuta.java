@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import servicios.ConsultaReservas;
+import respuestas.ConsultaReservas;
 
 public class InformacionRuta {
 	private double km;
@@ -30,7 +30,12 @@ public class InformacionRuta {
 	}
 	
 	public int getAsientosDisponibles(String aerolinea) {
+		if(this.reservas.get(aerolinea) != null) {
 		return this.aerolineas.get(aerolinea) - this.reservas.get(aerolinea);
+		}else {
+			return this.aerolineas.get(aerolinea);
+		}
+		
 	}
 	
 	public boolean isCabotaje() {
@@ -61,7 +66,7 @@ public class InformacionRuta {
 		//hacer un arreglo de ConsultaReservas e ir guardando en una lista
 		ArrayList<ConsultaReservas> reservasSalida = new ArrayList<ConsultaReservas>();
 
-		Iterator it = reservas.entrySet().iterator();
+		Iterator<Entry<String, Integer>> it = reservas.entrySet().iterator();
 			
 		while(it.hasNext()) {
 			

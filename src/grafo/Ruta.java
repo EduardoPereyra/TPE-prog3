@@ -1,7 +1,7 @@
 package grafo;
 import java.util.ArrayList;
 
-import servicios.ConsultaReservas;
+import respuestas.ConsultaReservas;
 
 public class Ruta {
 	private Aeropuerto destino;

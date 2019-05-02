@@ -2,7 +2,10 @@ package grafo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import servicios.ConsultaReservas;
+
+import respuestas.ConsultaReservas;
+import respuestas.ConsultaVueloDirecto;
+import respuestas.VuelosSinAerolinea;
 
 public class Sistema_aeropuertos {
 	private ArrayList<Aeropuerto> aeropuertos;
@@ -31,7 +34,7 @@ public class Sistema_aeropuertos {
 		}
 		
 		Ruta ruta = new Ruta(aeropuertos.get(j), info);
-		aeropuertos.get(i).addArco(ruta);
+		aeropuertos.get(i).addRuta(ruta);
 		
 		/*for(int i = 0; i < aeropuertos.size(); i++) {
 			if(aeropuertos.get(i).getNombre() == aeropuerto_origen) {
@@ -48,11 +51,11 @@ public class Sistema_aeropuertos {
 	}
 	
 	public void setearReserva(String aeropuerto_origen, String aeropuerto_destino, String aerolinea, int reservas) {
-		for(int i = 0; i < aeropuertos.size(); i++) {
-			if(aeropuertos.get(i).getNombre().equals(aeropuerto_origen)) {
-					aeropuertos.get(i).setReservaRuta(aeropuerto_destino, aerolinea, reservas);					
-				}
-			}	
+		int i = 0;
+		while(i < aeropuertos.size()-1 && !(aeropuertos.get(i).getNombre().equals(aeropuerto_origen))) {
+			i++;
+		}
+		aeropuertos.get(i).setReservaRuta(aeropuerto_destino, aerolinea, reservas);					
 	}
 	
     public ArrayList<Aeropuerto> listarAeropuertos(){
@@ -71,31 +74,51 @@ public class Sistema_aeropuertos {
     	
     	return reservasSalida;
     }
+    
+    public ConsultaVueloDirecto verificarVueloDirecto(String origen, String destino, String aerolinea) {
+    	int i = 0;
+    	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(origen))) {
+    		i++;
+    	}
+    	return this.aeropuertos.get(i).verificarDestino(destino, aerolinea);
+    }
 	
 	
-/*	public void dfs() {
-		for (Aeropuerto v : aeropuertos) {
-			v.setEstado("No visitado");			
+	public ArrayList<VuelosSinAerolinea> listarVuelosSinAerolinea(String origen, String destino, String aerolinea) {
+		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
+		for (Aeropuerto a : aeropuertos) {
+			a.setEstado("No visitado");			
 		}
-		
-		for (Aeropuerto v : aeropuertos) {
-			if(v.getEstado().equals("No visitado") ) {
-				dfs_visit(v);
-			}		
-		}
+    	int i = 0;
+    	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(origen))) {
+    		i++;
+    	}	
+    		double km = 0;
+    		int cant_escalas = 0;
+			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i)));
+	
+		return resultado;
 	}
 	
-	private void dfs_visit(Aeropuerto v) {
-		v.setEstado("Visitado");
-		
-		System.out.println(v.getInfo());
-		
-		for (ArcoDirigido a : v.getArcos()) {
-			if(a.getDestino().getEstado().equals("No visitado")) {
-				dfs_visit(a.getDestino());
+	private ArrayList<VuelosSinAerolinea> dfs_visit(String destino, double km, int cant_escalas, Aeropuerto a) {
+		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
+		a.setEstado("Visitado");
+		for (Ruta r : a.getRutas()) {
+			if((r.getDestino().getEstado().equals("No visitado"))&&(!(r.getDestino().getNombre().equals(destino)))) {
+				km += r.getInfo().getKm();
+				cant_escalas += 1;
+				/*falta aerolinea*/
+				dfs_visit(destino, km, cant_escalas, r.getDestino());
+			}else {
+				VuelosSinAerolinea vuelo = new VuelosSinAerolinea();
+				vuelo.setCant_km(km);
+				vuelo.setEscalas(cant_escalas);
+				/*agregar Aerolineas*/
+				resultado.add(vuelo);			
 			}
 		}
-		v.setEstado("Explorado");
+		a.setEstado("Explorado");
+		return resultado;
 	}
-*/
+
 }

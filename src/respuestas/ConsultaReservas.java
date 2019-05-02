@@ -1,4 +1,4 @@
-package servicios;
+package respuestas;
 
 public class ConsultaReservas {
 	//tener cual es le destino origen y cant reservas
