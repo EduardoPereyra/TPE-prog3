@@ -14,13 +14,14 @@ public class InformacionRuta {
 	private HashMap<String,Integer> aerolineas;
 	private HashMap<String,Integer> reservas;
 	
-	public InformacionRuta(double km, boolean cabotaje) {
+	public InformacionRuta(double km, boolean cabotaje) {//constructor
 		this.km = km;
 		this.cabotaje = cabotaje;
 		this.aerolineas = new HashMap<>();
 		this.reservas = new HashMap<>();
 	}
 	
+	//funciones
 	public double getKm() {
 		return km;
 	}

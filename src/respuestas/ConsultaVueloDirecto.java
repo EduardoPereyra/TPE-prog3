@@ -4,11 +4,12 @@ public class ConsultaVueloDirecto {
 	private double km;
 	private int cant_asientos;
 	
-	public ConsultaVueloDirecto( double km, int cant_asientos) {
+	public ConsultaVueloDirecto( double km, int cant_asientos) { //constructor
 		this.km = km;
 		this.cant_asientos = cant_asientos;
 	}
 	
+	//funciones
 	public double getKm() {
 		return km;
 	}

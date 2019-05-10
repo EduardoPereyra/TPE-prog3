@@ -7,7 +7,7 @@ public class ConsultaReservas {
 	private String aerolinea;
 	private int cantReservas;
 	
-	public ConsultaReservas(String origen, String destino, String aerolinea, int cantReservas){
+	public ConsultaReservas(String origen, String destino, String aerolinea, int cantReservas){ //constructor
 		this.origen = origen;
 		this.destino = destino;
 		this.aerolinea = aerolinea;

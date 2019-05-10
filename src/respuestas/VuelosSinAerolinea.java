@@ -7,10 +7,11 @@ public class VuelosSinAerolinea {
 	private int escalas;
 	private double cant_km;
 	
-	public VuelosSinAerolinea() {
+	public VuelosSinAerolinea() {//Constructor
 		this.aerolineas = new ArrayList<>();
 	}
 	
+	//funciones
 	public ArrayList<String> getAerolinea() {
 		return aerolineas;
 	}
@@ -29,18 +30,12 @@ public class VuelosSinAerolinea {
 	public void setCant_km(double cant_km) {
 		this.cant_km = cant_km;
 	}
-	
 	public String toString() {
-		String aerolineasString = "Aerolineas: ";
-		
-		
+		String aerolineasString = "Aerolineas: ";		
 		for(int i=0; i< this.aerolineas.size(); i++) {
-			aerolineasString += "\n\t" + this.aerolineas.get(i);
-			
-		}
-			
-		return "Cantidad de Escalas realizadas: " + this.escalas +"\n" + "Cantidad Kilometros: "+ this.cant_km + "\n" + aerolineasString; 
-				
+			aerolineasString += "\n\t" + this.aerolineas.get(i);		
+		}			
+		return "Cantidad de Escalas realizadas: " + this.escalas +"\n" + "Cantidad Kilometros: "+ this.cant_km + "\n" + aerolineasString; 			
 	}
 	
 

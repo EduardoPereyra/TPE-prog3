@@ -7,14 +7,15 @@ public class Ruta {
 	private Aeropuerto destino;
 	private InformacionRuta info;
 	
-	public Ruta(Aeropuerto destino,InformacionRuta info) {
+	public Ruta(Aeropuerto destino,InformacionRuta info) { //constructor
 		this.destino = destino;
 		this.info = info;
 	}
 	
-	public Ruta() {
+	public Ruta() {//construcor en vacio
 	}
 
+	//funciones
 	public Aeropuerto getDestino() {
 		return destino;
 	}

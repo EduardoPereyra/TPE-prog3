@@ -13,13 +13,14 @@ public class Aeropuerto {
 	private String estado;
 	private List<Ruta> rutas;
 	
-	public Aeropuerto(String nombre, String ciudad, String pais) {
+	public Aeropuerto(String nombre, String ciudad, String pais) { //constructor
 		this.rutas = new ArrayList<Ruta>();
 		this.nombre = nombre;
 		this.pais = pais;
 		this.ciudad = ciudad;
 	}
 	
+	//funciones
 	public void addRuta(Ruta ruta) {
 		this.rutas.add(ruta);
 	}
@@ -52,7 +53,7 @@ public class Aeropuerto {
 		this.estado = estado;
 	}
 	
-	public void setReservaRuta(String aeropuerto_destino, String aerolinea, int cantReservas) {
+	public void setReservaRuta(String aeropuerto_destino, String aerolinea, int cantReservas) { //setea las reservas en una aerolinea en una ruta valida
 		for(int i = 0; i < rutas.size() ; i++) {
 			if(rutas.get(i).getDestino().getNombre().equals(aeropuerto_destino)) {
 				rutas.get(i).setReserva(aerolinea, cantReservas);
@@ -60,19 +61,15 @@ public class Aeropuerto {
 		}
 	}
 	
-	public ArrayList<ConsultaReservas> getReservasDestino(){
-		
-		ArrayList<ConsultaReservas> reservasAeropuerto = new ArrayList<ConsultaReservas>();
-		
+	public ArrayList<ConsultaReservas> getReservasDestino(){ //devuelve un arreglo con todas las reservas
+		ArrayList<ConsultaReservas> reservasAeropuerto = new ArrayList<ConsultaReservas>();		
 		for(Ruta r : rutas) {
 			reservasAeropuerto.addAll(r.getReservas(this.nombre));
-		}
-		
+		}	
 		return reservasAeropuerto;
 	}
 	
-	public ConsultaVueloDirecto verificarDestino(String destino, String aerolinea) {
-		
+	public ConsultaVueloDirecto verificarDestino(String destino, String aerolinea) {//verifica que haya un vuelo directo hacia un destino con una aerolinea		
 		int i = 0;
     	while((i < this.rutas.size()-1)&&(!(this.rutas.get(i).getDestino().getNombre().equals(destino)))) {
     		i++;

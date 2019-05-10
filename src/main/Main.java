@@ -21,8 +21,8 @@ public class Main {
 	private static Scanner scanner;
 
 	public static void main(String[] args) {
-		//String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
-		String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
+		String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3"; //path de los archivos
+		//String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
 		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); //creacion del sistema de aeropuerto
 		readerAeropuertos(path,trivago); //carga de aeropuertos
 		readerRutas(path,trivago); //carga de rutas
@@ -34,7 +34,7 @@ public class Main {
 		
 	}
 	
-	public static int menu() {
+	public static int menu() { //imprime el menu y se queda esperando a que el usuario ingrese una opcion
 		System.out.println("\n\n===================================");
 		System.out.println("Ingrese una opcion: ");
 		System.out.println("1- Listar todos los aeropuertos.");
@@ -50,7 +50,7 @@ public class Main {
 		return opcion;
 	}
 	
-	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) { //menu
+	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) { //mediante la opcion ingresada imprime y llama a la funcion correspondiente
 		System.out.println(opcion);
 		switch (opcion) {
 		case 1:
@@ -173,10 +173,10 @@ public class Main {
 	        }
 	    }
 	
-		public static void write(String path) {
+		public static void write(String path, String opcionEjecutada, String mensajeSalida) { //imprime en un archivo salida.txt el mensaje 
 			BufferedWriter bw = null;
 			try {
-				File file = new File( path+ "/salida.csv");
+				File file = new File( path+ "/salida.txt");
 				if (!file.exists()) {
 					file.createNewFile();
 				}
@@ -185,20 +185,15 @@ public class Main {
 				bw = new BufferedWriter(fw);
 
 				// Escribo la primer linea del archivo
-				String contenidoLinea1 = "Usuario1;Tiempo1";
+				String contenidoLinea1 = opcionEjecutada;
 				bw.write(contenidoLinea1);
 				bw.newLine();
 
 				// Escribo la segunda linea del archivo
-				String contenidoLinea2 = "Usuario2;Tiempo2";
+				String contenidoLinea2 = mensajeSalida;
 				bw.write(contenidoLinea2);
 				bw.newLine();				
-				/*
-				 *
-				 * ... 
-				 * 
-				*/
-
+				
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			} finally {
@@ -235,7 +230,7 @@ public class Main {
 			}
 		}
 		
-		public static void listarVuelosSinAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) {
+		public static void listarVuelosSinAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) { //lista todos los vuelos posibles sin utilizar una aerolinea
 			ArrayList<VuelosSinAerolinea> vuelos = trivago.listarVuelosSinAerolinea(origen, destino, aerolinea);
 			for(int i=0; i<10; i++) {
 				System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nSin utilizar la Aerolinea : " + aerolinea+ "\n" + vuelos.get(i).toString());
