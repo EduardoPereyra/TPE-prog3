@@ -68,6 +68,8 @@ public class Sistema_aeropuertos {
 	
 	public ArrayList<VuelosSinAerolinea> listarVuelosSinAerolinea(String origen, String destino, String aerolineaX) { //lista todos los vuelos disponibles desde un origen a un destino sin utilizar una aerolinea
 		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
+		ArrayList<Aeropuerto> aux = new ArrayList<>();
+		ArrayList<ArrayList<String>> aerolineas = new ArrayList<>();
 		for (Aeropuerto a : aeropuertos) {
 			a.setEstado("No Visitado");			
 		}
@@ -77,32 +79,56 @@ public class Sistema_aeropuertos {
     	}	
     		double km = 0;
     		int cant_escalas = 0;
-			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i), aerolineaX));
+			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i), aerolineaX,aerolineas,aux));
 	
 		return resultado;
 	}
 	
-	private ArrayList<VuelosSinAerolinea> dfs_visit(String destino, double km, int cant_escalas, Aeropuerto puntero, String aerolineaX) { //dfs de todos las aeropuertos (conectado a listarVuelosSinAerolinea)
-		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();		
-		puntero.setEstado("Visitado");		
-		for (Ruta r : puntero.getRutas()) {		
-			ArrayList<String> aerolineas = new ArrayList<>(r.getInfo().getAerolineas());			
-			for(int i= 0; i<aerolineas.size(); i++) {
-				if(!(aerolineas.get(i).equals(aerolineaX))&&(r.getDestino().getEstado().equals("No Visitado"))) {
+	private ArrayList<VuelosSinAerolinea> dfs_visit(String destino, double km, int cant_escalas, Aeropuerto puntero, String aerolineaX,ArrayList<ArrayList<String>> aerolineas,ArrayList<Aeropuerto> aux) { //dfs de todos las aeropuertos (conectado a listarVuelosSinAerolinea)
+		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
+		puntero.setEstado("Visitado");
+		aux.add(puntero);
+		for (Ruta r : puntero.getRutas()) {				
+				ArrayList<String> aerolineasDisponibles = aerolineasVisitables(aerolineaX, r);
+				if(!aerolineasDisponibles.isEmpty()) {
+					km += r.getInfo().getKm();
+					aerolineas.add(aerolineasDisponibles);
 					if(!(r.getDestino().getNombre().equals(destino))) {
 						cant_escalas += 1;
-						resultado.addAll(dfs_visit(destino, km, cant_escalas, r.getDestino(), aerolineaX));
-					}	
-					VuelosSinAerolinea vuelo = new VuelosSinAerolinea();
-					km += r.getInfo().getKm();
-					vuelo.setCant_km(km);
-					vuelo.setEscalas(cant_escalas);
-					vuelo.setAerolinea(aerolineas.get(i));
-					resultado.add(vuelo);							
+						resultado.addAll(dfs_visit(destino, km, cant_escalas, r.getDestino(), aerolineaX,aerolineas,aux));			
+					}else {
+						VuelosSinAerolinea vuelo = new VuelosSinAerolinea();
+						vuelo.setCant_km(km);
+						vuelo.setEscalas(cant_escalas);
+						vuelo.setAerolineas(aerolineas);
+						resultado.add(vuelo);
+						aux.add(r.getDestino());
+						System.out.println(aux);
+						aux.remove(r.getDestino());
+					}							
+					cant_escalas -= 1;
+					km -= r.getInfo().getKm();
+					aerolineas.remove(aerolineasDisponibles);
 				}
-			}			
 		}
+		
 		puntero.setEstado("No Visitado");
+		aux.remove(puntero);
+		return resultado;
+	}
+	
+	private ArrayList<String> aerolineasVisitables(String aerolineaX,Ruta r) {
+		ArrayList<String> resultado = new ArrayList<>();
+		if(r.getDestino().getEstado().equals("No Visitado")){
+			for(int i = 0; i < r.getInfo().getAerolineas().size(); i++) {
+				String aux =r.getInfo().getAerolineas().get(i);
+				if(!(aux.equals(aerolineaX))) {
+					if(r.getInfo().getAsientosDisponibles(aux) > 0) {
+						resultado.add(aux);
+					}
+				}
+			}
+		}
 		return resultado;
 	}
 

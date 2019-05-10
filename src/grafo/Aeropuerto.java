@@ -78,7 +78,11 @@ public class Aeropuerto {
     	return resultado;	
 	}
 	
+//	public String toString() {
+//		return " Aeropuerto : [Nombre: " + this.nombre + ", Pais: " + this.pais + ", Ciudad: " + this.ciudad + "]";
+//	}
+	
 	public String toString() {
-		return " Aeropuerto : [Nombre: " + this.nombre + ", Pais: " + this.pais + ", Ciudad: " + this.ciudad + "]";
+	return this.nombre;
 	}
 }

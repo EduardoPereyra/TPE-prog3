@@ -232,8 +232,10 @@ public class Main {
 		
 		public static void listarVuelosSinAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) { //lista todos los vuelos posibles sin utilizar una aerolinea
 			ArrayList<VuelosSinAerolinea> vuelos = trivago.listarVuelosSinAerolinea(origen, destino, aerolinea);
-			for(int i=0; i<10; i++) {
-				System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nSin utilizar la Aerolinea : " + aerolinea+ "\n" + vuelos.get(i).toString());
+			for(int i=0; i<vuelos.size(); i++) {
+				if(vuelos.get(i).getEscalas() < 5) {
+					System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nSin utilizar la Aerolinea : " + aerolinea+ "\n" + vuelos.get(i).toString());	
+				}
 			}
 			
 			if(vuelos.isEmpty()) {

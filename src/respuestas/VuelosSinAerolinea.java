@@ -3,7 +3,7 @@ package respuestas;
 import java.util.ArrayList;
 
 public class VuelosSinAerolinea {
-	private ArrayList<String> aerolineas;
+	private ArrayList<ArrayList<String>> aerolineas;
 	private int escalas;
 	private double cant_km;
 	
@@ -12,11 +12,11 @@ public class VuelosSinAerolinea {
 	}
 	
 	//funciones
-	public ArrayList<String> getAerolinea() {
+	public ArrayList<ArrayList<String>> getAerolinea() {
 		return aerolineas;
 	}
-	public void setAerolinea(String aerolinea) {
-		this.aerolineas.add(aerolinea);
+	public void setAerolineas(ArrayList<ArrayList<String>> aerolineas) {
+		this.aerolineas.addAll(aerolineas);
 	}
 	public int getEscalas() {
 		return escalas;
