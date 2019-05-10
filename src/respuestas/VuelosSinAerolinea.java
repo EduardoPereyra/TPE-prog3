@@ -30,6 +30,19 @@ public class VuelosSinAerolinea {
 		this.cant_km = cant_km;
 	}
 	
+	public String toString() {
+		String aerolineasString = "Aerolineas: ";
+		
+		
+		for(int i=0; i< this.aerolineas.size(); i++) {
+			aerolineasString += "\n\t" + this.aerolineas.get(i);
+			
+		}
+			
+		return "Cantidad de Escalas realizadas: " + this.escalas +"\n" + "Cantidad Kilometros: "+ this.cant_km + "\n" + aerolineasString; 
+				
+	}
+	
 
 
 }

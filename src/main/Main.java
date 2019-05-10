@@ -14,14 +14,15 @@ import grafo.InformacionRuta;
 import grafo.Sistema_aeropuertos;
 import respuestas.ConsultaReservas;
 import respuestas.ConsultaVueloDirecto;
+import respuestas.VuelosSinAerolinea;
 
 public class Main {
 
 	private static Scanner scanner;
 
 	public static void main(String[] args) {
-		String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
-		//String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
+		//String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3";
+		String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
 		Sistema_aeropuertos trivago = new Sistema_aeropuertos(); //creacion del sistema de aeropuerto
 		readerAeropuertos(path,trivago); //carga de aeropuertos
 		readerRutas(path,trivago); //carga de rutas
@@ -235,6 +236,14 @@ public class Main {
 		}
 		
 		public static void listarVuelosSinAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) {
+			ArrayList<VuelosSinAerolinea> vuelos = trivago.listarVuelosSinAerolinea(origen, destino, aerolinea);
+			for(int i=0; i<10; i++) {
+				System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nSin utilizar la Aerolinea : " + aerolinea+ "\n" + vuelos.get(i).toString());
+			}
+			
+			if(vuelos.isEmpty()) {
+				System.out.println("\nNo existe caminos posibles sin esa aerolinea");
+			}
 			
 		}
 		

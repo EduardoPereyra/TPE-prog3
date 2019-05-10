@@ -38,6 +38,20 @@ public class InformacionRuta {
 		
 	}
 	
+	public ArrayList<String> getAerolineas(){
+		ArrayList<String> aerolineasSalida = new ArrayList<String>();
+
+		Iterator<Entry<String, Integer>> it = aerolineas.entrySet().iterator();
+			
+		while(it.hasNext()) {
+			
+			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) it.next();
+			
+			aerolineasSalida.add(entry.getKey());
+		}
+		return aerolineasSalida;
+	}
+	
 	public boolean isCabotaje() {
 		return cabotaje;
 	}
@@ -58,10 +72,6 @@ public class InformacionRuta {
 		return "Kilometros : " + this.km + " Cabotaje : " + this.cabotaje;
 	}
 	
-/*	public HashMap<String, Integer> getAerolineas() {
-	return aerolineas;
-}
-*/	
 	public ArrayList<ConsultaReservas> getInfoReservas(String aeropuerto_origen, String aeropuerto_destino) {
 		//hacer un arreglo de ConsultaReservas e ir guardando en una lista
 		ArrayList<ConsultaReservas> reservasSalida = new ArrayList<ConsultaReservas>();
