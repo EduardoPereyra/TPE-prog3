@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import respuestas.ConsultaReservas;
-import respuestas.ConsultaVueloDirecto;
+import respuestas.VueloDirecto;
+import respuestas.VueloDirectoConAerolinea;
 import respuestas.VuelosSinAerolinea;
 
 public class Sistema_aeropuertos {
@@ -57,18 +58,31 @@ public class Sistema_aeropuertos {
     	return reservasSalida;
     }
     
-    public ConsultaVueloDirecto verificarVueloDirecto(String origen, String destino, String aerolinea) { //verifica si existe un vuelo directo entre un aeropuerto origen y destino con una aerolinea
+    public VueloDirectoConAerolinea verificarVueloDirectoAerolinea(String origen, String destino, String aerolinea) { //verifica si existe un vuelo directo entre un aeropuerto origen y destino con una aerolinea
     	int i = 0;
     	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(origen))) {
     		i++;
     	}
-    	return this.aeropuertos.get(i).verificarDestino(destino, aerolinea);
+    	return this.aeropuertos.get(i).verificarDestinoAerolinea(destino, aerolinea);
     }
 	
-	
+    public VueloDirecto listarVuelosDirectos(String origen, String destino){
+    	VueloDirecto vuelosDirecto = new VueloDirecto(0);
+    	for (Ruta r : buscarAeropuerto(origen).getRutas()) {	//pasarlo a while asi corta antes
+    		if(r.getDestino().getNombre().equals(destino)) {
+    	    	vuelosDirecto.setKm(r.getInfo().getKm());
+    			for(int i = 0; i < r.getInfo().getAerolineas().size(); i++) {
+    				if(r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i)) > 0) {
+    					vuelosDirecto.setAerolinea(r.getInfo().getAerolineas().get(i), r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i)));
+    				}
+    			}
+    		}
+    	}
+    	return vuelosDirecto;
+    }
+ 	
 	public ArrayList<VuelosSinAerolinea> listarVuelosSinAerolinea(String origen, String destino, String aerolineaX) { //lista todos los vuelos disponibles desde un origen a un destino sin utilizar una aerolinea
 		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
-		ArrayList<Aeropuerto> aux = new ArrayList<>();
 		ArrayList<ArrayList<String>> aerolineas = new ArrayList<>();
 		for (Aeropuerto a : aeropuertos) {
 			a.setEstado("No Visitado");			
@@ -79,15 +93,14 @@ public class Sistema_aeropuertos {
     	}	
     		double km = 0;
     		int cant_escalas = 0;
-			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i), aerolineaX,aerolineas,aux));
+			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i), aerolineaX,aerolineas));
 	
 		return resultado;
 	}
 	
-	private ArrayList<VuelosSinAerolinea> dfs_visit(String destino, double km, int cant_escalas, Aeropuerto puntero, String aerolineaX,ArrayList<ArrayList<String>> aerolineas,ArrayList<Aeropuerto> aux) { //dfs de todos las aeropuertos (conectado a listarVuelosSinAerolinea)
+	private ArrayList<VuelosSinAerolinea> dfs_visit(String destino, double km, int cant_escalas, Aeropuerto puntero, String aerolineaX,ArrayList<ArrayList<String>> aerolineas) { //dfs de todos las aeropuertos (conectado a listarVuelosSinAerolinea)
 		ArrayList<VuelosSinAerolinea> resultado = new ArrayList<>();
 		puntero.setEstado("Visitado");
-		aux.add(puntero);
 		for (Ruta r : puntero.getRutas()) {				
 				ArrayList<String> aerolineasDisponibles = aerolineasVisitables(aerolineaX, r);
 				if(!aerolineasDisponibles.isEmpty()) {
@@ -95,25 +108,20 @@ public class Sistema_aeropuertos {
 					aerolineas.add(aerolineasDisponibles);
 					if(!(r.getDestino().getNombre().equals(destino))) {
 						cant_escalas += 1;
-						resultado.addAll(dfs_visit(destino, km, cant_escalas, r.getDestino(), aerolineaX,aerolineas,aux));			
+						resultado.addAll(dfs_visit(destino, km, cant_escalas, r.getDestino(), aerolineaX,aerolineas));			
 					}else {
 						VuelosSinAerolinea vuelo = new VuelosSinAerolinea();
 						vuelo.setCant_km(km);
 						vuelo.setEscalas(cant_escalas);
 						vuelo.setAerolineas(aerolineas);
 						resultado.add(vuelo);
-						aux.add(r.getDestino());
-						System.out.println(aux);
-						aux.remove(r.getDestino());
 					}							
 					cant_escalas -= 1;
 					km -= r.getInfo().getKm();
 					aerolineas.remove(aerolineasDisponibles);
 				}
-		}
-		
+		}	
 		puntero.setEstado("No Visitado");
-		aux.remove(puntero);
 		return resultado;
 	}
 	
@@ -130,6 +138,14 @@ public class Sistema_aeropuertos {
 			}
 		}
 		return resultado;
+	}
+	
+	private Aeropuerto buscarAeropuerto(String aeropuerto) { //busca un aeropuerto por su nombre
+    	int i = 0;
+    	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(aeropuerto))) {
+    		i++;
+    	}
+    	return this.aeropuertos.get(i);
 	}
 
 }

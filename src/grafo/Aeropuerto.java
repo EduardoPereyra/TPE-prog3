@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import respuestas.ConsultaReservas;
-import respuestas.ConsultaVueloDirecto;
+import respuestas.VueloDirectoConAerolinea;
 
 public class Aeropuerto {
 	private String nombre;
@@ -69,20 +69,16 @@ public class Aeropuerto {
 		return reservasAeropuerto;
 	}
 	
-	public ConsultaVueloDirecto verificarDestino(String destino, String aerolinea) {//verifica que haya un vuelo directo hacia un destino con una aerolinea		
+	public VueloDirectoConAerolinea verificarDestinoAerolinea(String destino, String aerolinea) {//verifica que haya un vuelo directo hacia un destino con una aerolinea		
 		int i = 0;
     	while((i < this.rutas.size()-1)&&(!(this.rutas.get(i).getDestino().getNombre().equals(destino)))) {
     		i++;
     	}
-    	ConsultaVueloDirecto resultado = new ConsultaVueloDirecto(this.rutas.get(i).getInfo().getKm(),this.rutas.get(i).getInfo().getAsientosDisponibles(aerolinea));
+    	VueloDirectoConAerolinea resultado = new VueloDirectoConAerolinea(this.rutas.get(i).getInfo().getKm(),this.rutas.get(i).getInfo().getAsientosDisponibles(aerolinea));
     	return resultado;	
 	}
 	
-//	public String toString() {
-//		return " Aeropuerto : [Nombre: " + this.nombre + ", Pais: " + this.pais + ", Ciudad: " + this.ciudad + "]";
-//	}
-	
 	public String toString() {
-	return this.nombre;
+		return " Aeropuerto : [Nombre: " + this.nombre + ", Pais: " + this.pais + ", Ciudad: " + this.ciudad + "]";
 	}
 }

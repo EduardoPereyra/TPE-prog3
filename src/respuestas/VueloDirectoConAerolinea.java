@@ -1,10 +1,10 @@
 package respuestas;
 
-public class ConsultaVueloDirecto {
+public class VueloDirectoConAerolinea {
 	private double km;
 	private int cant_asientos;
 	
-	public ConsultaVueloDirecto( double km, int cant_asientos) { //constructor
+	public VueloDirectoConAerolinea( double km, int cant_asientos) { //constructor
 		this.km = km;
 		this.cant_asientos = cant_asientos;
 	}

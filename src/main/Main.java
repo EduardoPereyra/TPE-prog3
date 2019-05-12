@@ -13,7 +13,8 @@ import grafo.Aeropuerto;
 import grafo.InformacionRuta;
 import grafo.Sistema_aeropuertos;
 import respuestas.ConsultaReservas;
-import respuestas.ConsultaVueloDirecto;
+import respuestas.VueloDirecto;
+import respuestas.VueloDirectoConAerolinea;
 import respuestas.VuelosSinAerolinea;
 
 public class Main {
@@ -41,7 +42,7 @@ public class Main {
 		System.out.println("2- Listar todas las reservas realizadas.");
 		System.out.println("3- Servicio 1: Verificar vuelo directo.");
 		System.out.println("4- Servicio 2: Obtener vuelos sin aerolínea.");
-		System.out.println("5- Servicio 3: Vuelos disponibles.");
+		System.out.println("5- Servicio 3: Vuelos disponibles directos.");
 		System.out.println("0- Salir");
 		System.out.println("===================================\n\n");
         scanner = new Scanner(System.in);
@@ -69,7 +70,7 @@ public class Main {
 			String destino = insertarString();
 			System.out.println("Ingrese Aerolinea");
 			String aerolinea = insertarString();
-			verificarVueloDirecto(trivago,origen,destino,aerolinea);
+			verificarVueloDirectoAerolinea(trivago,origen,destino,aerolinea);
 			break;
 		case 4:
 			System.out.println("---Servicio 2: Obtener vuelos sin aerolínea---");
@@ -82,8 +83,12 @@ public class Main {
 			listarVuelosSinAerolinea(trivago,origen1,destino1,aerolinea1);
 			break;
 		case 5:
-			System.out.println("---Servicio 3: Vuelos disponibles---");
-			System.out.println("No podemos resolver su consulta en este momento, intente nuevamente mas tarde");
+			System.out.println("---Servicio 3: Vuelos disponibles directos---");
+			System.out.println("Ingrese Aeropuerto Origen");
+			String origen2 = insertarString();
+			System.out.println("Ingrese Aeropuerto Destino");
+			String destino2 = insertarString();
+			listarVuelosDirecto(trivago,origen2,destino2);
 			break;
 		case 0:
 			System.out.println("---Salir---");
@@ -220,8 +225,8 @@ public class Main {
 			}
 		}
 		
-		public static void verificarVueloDirecto(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) { //muestra si hay vuelo directo 
-			ConsultaVueloDirecto resultado = trivago.verificarVueloDirecto(origen, destino, aerolinea);	 						//desde un origen hacia un destino con una aerolinea
+		public static void verificarVueloDirectoAerolinea(Sistema_aeropuertos trivago, String origen, String destino, String aerolinea) { //muestra si hay vuelo directo 
+			VueloDirectoConAerolinea resultado = trivago.verificarVueloDirectoAerolinea(origen, destino, aerolinea);	 						//desde un origen hacia un destino con una aerolinea
 			if(resultado != null) {
 			System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nCon la aerolinea : " 
 					+ aerolinea + "\nHay : " + resultado.getKm() + " km \nTeniendo disponibles : " + resultado.getCant_asientos() + " asientos" );
@@ -242,6 +247,19 @@ public class Main {
 				System.out.println("\nNo existe caminos posibles sin esa aerolinea");
 			}
 			
+		}
+		
+		public static void listarVuelosDirecto(Sistema_aeropuertos trivago, String origen, String destino) { //lista si hay vuelo directo 
+			VueloDirecto resultado = trivago.listarVuelosDirectos(origen, destino);	 	//desde un origen hacia un destino
+			if(resultado.getKm() > 0) {
+				
+			System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nHay : " + resultado.getKm() + " km.");
+			for(int i = 0; i< resultado.getAerolineas().size(); i++) {
+				System.out.println("\nCon la aerolinea : " + resultado.getAerolineas().get(i) + "\nHay disponibles : " + resultado.getCant_asientos(resultado.getAerolineas().get(i)) + " asientos." );
+			}
+			}else {
+				System.out.println("No hay vuelo directo.");	
+			}
 		}
 		
 		private static String insertarString() { //devuelve el string ingresado por el usuario
