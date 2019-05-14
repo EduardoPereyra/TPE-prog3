@@ -73,8 +73,10 @@ public class Sistema_aeropuertos {
     	for(Aeropuerto a : aeropuertosOrigen) { // itero sobre los aeropuertos del pais origen
     		
     		for(Ruta r : a.getRutas()) { //itero en las rutas directas
-    			if(r.getDestino().getPais().equals(paisDestino)) {  //pregunto si en la ruta directa tengo un aeropuerto en el pais destino
-    				VueloDirecto vueloDirecto = new VueloDirecto(0); // si hay creo el vuelo directo y seteo km
+    			if(r.getDestino().getPais().equals(paisDestino)) {  //pregunto si en la ruta directa tengo un aeropuerto del pais destino
+    				VueloDirecto vueloDirecto = new VueloDirecto(0); // si hay creo el vuelo directo seteo km y guardo el Aeropuerto Origen y Destino
+    				vueloDirecto.setAeropuertoOrigen(a.getNombre());
+    				vueloDirecto.setAeropuertoDestino(r.getDestino().getNombre());
     				vueloDirecto.setKm(r.getInfo().getKm());
     				
     				for(int i = 0; i < r.getInfo().getAerolineas().size(); i++) {  //itero sobre las aerolineas de la ruta directa
@@ -82,7 +84,7 @@ public class Sistema_aeropuertos {
         					vueloDirecto.setAerolinea(r.getInfo().getAerolineas().get(i), r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i))); //si tiene agrego la aerolina al vuelo
         				}
     				}
-    				vuelosDirectos.add(vueloDirecto); //agrego el vuelo al arreglo de vuelos
+    				vuelosDirectos.add(vueloDirecto); //agrego el vuelo al arreglo de vuelos directos
     			}
     		}
     	}

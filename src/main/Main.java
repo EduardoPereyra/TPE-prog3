@@ -249,15 +249,16 @@ public class Main {
 			
 		}
 		
-		public static void listarVuelosDirecto(Sistema_aeropuertos trivago, String origen, String destino) { //lista si hay vuelo directo 
-			VueloDirecto resultado = trivago.listarVuelosDirectos(origen, destino);	 	//desde un origen hacia un destino
-			if(resultado.getKm() > 0) {
+		public static void listarVuelosDirecto(Sistema_aeropuertos trivago, String paisOrigen, String paisDestino) { //lista vuelos directos entre dos paises 
+			ArrayList<VueloDirecto> resultado = trivago.listarVuelosDirectos(paisOrigen, paisDestino);
+			if(!resultado.isEmpty()) {
 				
-			System.out.println("Desde el Aeropuerto : "+ origen +"\nHasta : " + destino + "\nHay : " + resultado.getKm() + " km.");
-			for(int i = 0; i< resultado.getAerolineas().size(); i++) {
-				System.out.println("\nCon la aerolinea : " + resultado.getAerolineas().get(i) + "\nHay disponibles : " + resultado.getCant_asientos(resultado.getAerolineas().get(i)) + " asientos." );
+				System.out.println("Desde: "+ paisOrigen +" | Hasta : " + paisDestino);
+				for(int i = 0; i< resultado.size(); i++) {
+					System.out.println(resultado.get(i));
+				}
 			}
-			}else {
+			else {
 				System.out.println("No hay vuelo directo.");	
 			}
 		}

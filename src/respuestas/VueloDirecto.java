@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 public class VueloDirecto {
 	private HashMap<String,Integer> aerolineas;
 	private double km;
+	private String aeropuertoOrigen;
+	private String aeropuertoDestino;
 	
 	public VueloDirecto(double km) { //constructor
 		this.aerolineas = new HashMap<>();
@@ -44,4 +46,31 @@ public class VueloDirecto {
 		}
 		return aerolineasSalida;
 	}
+
+	public String getAeropuertoOrigen() {
+		return aeropuertoOrigen;
+	}
+
+	public void setAeropuertoOrigen(String aeropuertoOrigen) {
+		this.aeropuertoOrigen = aeropuertoOrigen;
+	}
+
+	public String getAeropuertoDestino() {
+		return aeropuertoDestino;
+	}
+
+	public void setAeropuertoDestino(String aeropuertoDestino) {
+		this.aeropuertoDestino = aeropuertoDestino;
+	}
+	
+	public String toString() {
+		ArrayList<String> aerolineas = getAerolineas();
+		String aerolineasString = "Aerolineas: ";
+		for(int i=0; i<aerolineas.size(); i++) {
+			aerolineasString += "\n\t" + aerolineas.get(i);
+		}
+		return "\nAeropuerto Origen: "+ aeropuertoOrigen + "| Aeropuerto Destino: "+ aeropuertoDestino + "\n\t\t Cantidad de Kilometros: "+ km + "\n\t\t" + aerolineasString + "]";
+	}
+	
+	
 }
