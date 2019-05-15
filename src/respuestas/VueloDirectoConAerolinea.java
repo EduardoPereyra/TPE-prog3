@@ -9,6 +9,10 @@ public class VueloDirectoConAerolinea {
 		this.cant_asientos = cant_asientos;
 	}
 	
+	public VueloDirectoConAerolinea() {
+		
+	}
+	
 	//funciones
 	public double getKm() {
 		return km;

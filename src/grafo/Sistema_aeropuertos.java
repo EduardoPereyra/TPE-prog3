@@ -74,10 +74,7 @@ public class Sistema_aeropuertos {
     		
     		for(Ruta r : a.getRutas()) { //itero en las rutas directas
     			if(r.getDestino().getPais().equals(paisDestino)) {  //pregunto si en la ruta directa tengo un aeropuerto del pais destino
-    				VueloDirecto vueloDirecto = new VueloDirecto(0); // si hay creo el vuelo directo seteo km y guardo el Aeropuerto Origen y Destino
-    				vueloDirecto.setAeropuertoOrigen(a.getNombre());
-    				vueloDirecto.setAeropuertoDestino(r.getDestino().getNombre());
-    				vueloDirecto.setKm(r.getInfo().getKm());
+    				VueloDirecto vueloDirecto = new VueloDirecto(r.getInfo().getKm(), a.getNombre(), r.getDestino().getNombre()); // si hay creo el vuelo directo seteo km y guardo el Aeropuerto Origen y Destino
     				
     				for(int i = 0; i < r.getInfo().getAerolineas().size(); i++) {  //itero sobre las aerolineas de la ruta directa
         				if(r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i)) > 0) {  //pregunto si dicha aerolinea tiene asientos disponibles
@@ -90,18 +87,6 @@ public class Sistema_aeropuertos {
     	}
     	
     	return vuelosDirectos;
-    	
-    	/*for (Ruta r : buscarAeropuerto(origen).getRutas()) {	//pasarlo a while asi corta antes
-    		if(r.getDestino().getNombre().equals(destino)) {
-    	    	vuelosDirecto.setKm(r.getInfo().getKm());
-    			for(int i = 0; i < r.getInfo().getAerolineas().size(); i++) {
-    				if(r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i)) > 0) {
-    					vuelosDirecto.setAerolinea(r.getInfo().getAerolineas().get(i), r.getInfo().getAsientosDisponibles(r.getInfo().getAerolineas().get(i)));
-    				}
-    			}
-    		}
-    	}*/
-    	
     }
  	
 	public ArrayList<VuelosSinAerolinea> listarVuelosSinAerolinea(String origen, String destino, String aerolineaX) { //lista todos los vuelos disponibles desde un origen a un destino sin utilizar una aerolinea

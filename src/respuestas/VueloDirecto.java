@@ -12,9 +12,11 @@ public class VueloDirecto {
 	private String aeropuertoOrigen;
 	private String aeropuertoDestino;
 	
-	public VueloDirecto(double km) { //constructor
+	public VueloDirecto(double km, String aeropuerto_origen, String aeropuerto_destino) { //constructor
 		this.aerolineas = new HashMap<>();
 		this.km = km;
+		this.aeropuertoOrigen = aeropuerto_origen;
+		this.aeropuertoDestino = aeropuerto_destino;
 	}
 	
 	//funciones

@@ -11,7 +11,7 @@ public class Aeropuerto {
 	private String pais;
 	private String ciudad;
 	private String estado;
-	private List<Ruta> rutas;
+	private ArrayList<Ruta> rutas;
 	
 	public Aeropuerto(String nombre, String ciudad, String pais) { //constructor
 		this.rutas = new ArrayList<Ruta>();
@@ -71,11 +71,15 @@ public class Aeropuerto {
 	
 	public VueloDirectoConAerolinea verificarDestinoAerolinea(String destino, String aerolinea) {//verifica que haya un vuelo directo hacia un destino con una aerolinea		
 		int i = 0;
+		
     	while((i < this.rutas.size()-1)&&(!(this.rutas.get(i).getDestino().getNombre().equals(destino)))) {
     		i++;
     	}
-    	VueloDirectoConAerolinea resultado = new VueloDirectoConAerolinea(this.rutas.get(i).getInfo().getKm(),this.rutas.get(i).getInfo().getAsientosDisponibles(aerolinea));
-    	return resultado;	
+    	
+    	if(this.rutas.get(i).getDestino().getNombre().equals(destino)) {
+    		return new VueloDirectoConAerolinea(this.rutas.get(i).getInfo().getKm(),this.rutas.get(i).getInfo().getAsientosDisponibles(aerolinea));
+    	}
+    	return new VueloDirectoConAerolinea();	
 	}
 	
 	public String toString() {

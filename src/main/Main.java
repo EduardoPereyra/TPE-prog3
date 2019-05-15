@@ -152,7 +152,7 @@ public class Main {
 	                trivago.setearRuta_Aeropuerto(items[1], items[0], info);  //seteo la misma ruta pero de "vuelta"
 
 	            }
-	            System.out.println("Cargado con exito...");
+	            System.out.println("Cargado con exito.");
 	        } catch (IOException e) {
 	            e.printStackTrace();
 	        }
