@@ -25,24 +25,15 @@ public class Sistema_aeropuertos {
 	}
 	
 	public void setearRuta_Aeropuerto(String aeropuerto_origen,String aeropuerto_destino, InformacionRuta info) { //setea la ruta de un aeropuerto hacia un aeropuerto destino
-		int i = 0;
-		while(i < aeropuertos.size()-1 && !(aeropuertos.get(i).getNombre().equals(aeropuerto_origen))) {
-			i++;
-		}	
-		int j = 0;
-		while(j < aeropuertos.size()-1 && !(aeropuertos.get(j).getNombre().equals(aeropuerto_destino))) {
-			j++;
-		}	
-		Ruta ruta = new Ruta(aeropuertos.get(j), info);
-		aeropuertos.get(i).addRuta(ruta);	
+    	Aeropuerto aeropuertoOrigen = buscarAeropuerto(aeropuerto_origen);
+    	Aeropuerto aeropuertoDestino = buscarAeropuerto(aeropuerto_destino);
+		Ruta ruta = new Ruta(aeropuertoDestino, info);
+		aeropuertoOrigen.addRuta(ruta);	
 	}
 	
 	public void setearReserva(String aeropuerto_origen, String aeropuerto_destino, String aerolinea, int reservas) { //setea las reservas en una ruta especifica
-		int i = 0;
-		while(i < aeropuertos.size()-1 && !(aeropuertos.get(i).getNombre().equals(aeropuerto_origen))) {
-			i++;
-		}
-		aeropuertos.get(i).setReservaRuta(aeropuerto_destino, aerolinea, reservas);					
+		Aeropuerto aeropuertoOrigen = buscarAeropuerto(aeropuerto_origen);
+		aeropuertoOrigen.setReservaRuta(aeropuerto_destino, aerolinea, reservas);					
 	}
 	
     public ArrayList<Aeropuerto> listarAeropuertos(){ //lista todos los aeropuertos
@@ -54,21 +45,18 @@ public class Sistema_aeropuertos {
     	ArrayList<ConsultaReservas> reservasSalida = new ArrayList<ConsultaReservas>(); 	
     	for(Aeropuerto a : aeropuertos) {
     		reservasSalida.addAll(a.getReservasDestino());
-    	} 	
+    	}
     	return reservasSalida;
     }
     
     public VueloDirectoConAerolinea verificarVueloDirectoAerolinea(String origen, String destino, String aerolinea) { //verifica si existe un vuelo directo entre un aeropuerto origen y destino con una aerolinea
-    	int i = 0;
-    	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(origen))) {
-    		i++;
-    	}
-    	return this.aeropuertos.get(i).verificarDestinoAerolinea(destino, aerolinea);
+	    	Aeropuerto aeropuertoOrigen = buscarAeropuerto(origen);
+    	return aeropuertoOrigen.verificarDestinoAerolinea(destino, aerolinea);
     }
 	
     public ArrayList<VueloDirecto> listarVuelosDirectos(String paisOrigen, String paisDestino){
     	ArrayList<VueloDirecto> vuelosDirectos = new ArrayList<>();
-    	ArrayList<Aeropuerto> aeropuertosOrigen = buscarAeropuertos(paisOrigen); //encuentro aeropuertos del pais origen
+    	ArrayList<Aeropuerto> aeropuertosOrigen = buscarAeropuertosPais(paisOrigen); //encuentro aeropuertos del pais origen
     	
     	for(Aeropuerto a : aeropuertosOrigen) { // itero sobre los aeropuertos del pais origen
     		
@@ -95,14 +83,10 @@ public class Sistema_aeropuertos {
 		for (Aeropuerto a : aeropuertos) {
 			a.setEstado("No Visitado");			
 		}
-    	int i = 0;
-    	while((i < this.aeropuertos.size()-1)&&(!this.aeropuertos.get(i).getNombre().equals(origen))) {
-    		i++;
-    	}	
+    	Aeropuerto aeropuertoDestino = buscarAeropuerto(origen);
     		double km = 0;
     		int cant_escalas = 0;
-			resultado.addAll(dfs_visit(destino,km,cant_escalas,this.aeropuertos.get(i), aerolineaX,aerolineas));
-	
+			resultado.addAll(dfs_visit(destino,km,cant_escalas,aeropuertoDestino, aerolineaX,aerolineas));	
 		return resultado;
 	}
 	
@@ -156,15 +140,14 @@ public class Sistema_aeropuertos {
     	return this.aeropuertos.get(i);
 	}
 	
-	private ArrayList<Aeropuerto> buscarAeropuertos(String pais) { //busca un aeropuerto por su nombre
+	private ArrayList<Aeropuerto> buscarAeropuertosPais(String pais) { //busca un aeropuerto por su nombre
 		ArrayList<Aeropuerto> salida = new ArrayList<>();
 		
 		for(int i=0; i<aeropuertos.size(); i++) {
 			if(aeropuertos.get(i).getPais().equals(pais)) {
 				salida.add(aeropuertos.get(i));
 			}
-		}
-		
+		}		
     	return salida; 
 	}
 
