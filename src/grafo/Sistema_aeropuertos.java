@@ -162,4 +162,65 @@ public class Sistema_aeropuertos {
 		aux = null;
 		return aux;
 	}
+	
+	public ArrayList<Aeropuerto> visitAll(Aeropuerto origen){
+		ArrayList<Aeropuerto> recorridoActual = new ArrayList<>();
+		ArrayList<Aeropuerto> recorridoMenor = new ArrayList<>();
+		double pesoActual = 0.0;
+		double pesoMenor = 0.0;
+		
+		for (Aeropuerto a : aeropuertos) {
+			a.setEstado("No Visitado");			
+		}
+		
+		visit_back(recorridoActual, recorridoMenor, pesoActual, pesoMenor, origen, origen);
+		
+		return recorridoMenor;
+	}
+	
+	private void visit_back(ArrayList<Aeropuerto> recorridoActual, ArrayList<Aeropuerto> recorridoMenor, double pesoActual, double pesoMenor, Aeropuerto actual, Aeropuerto origen) {
+		recorridoActual.add(actual);
+		actual.setEstado("Visitado");
+		
+		for(Ruta r : actual.getRutas()) {
+			pesoActual = pesoActual + r.getInfo().getKm();
+			
+			if(r.getDestino().getNombre().equals(origen.getNombre())) {
+				
+				if(pesoActual < pesoMenor) {
+					pesoMenor = pesoActual;
+					recorridoMenor = recorridoActual;
+				}
+			}
+			else {
+				if(r.getDestino().getEstado().equals("No Visitado")) {
+					
+					visit_back(recorridoActual, recorridoMenor, pesoActual, pesoMenor, r.getDestino(), origen);
+				}
+			}
+			
+			pesoActual = pesoActual - r.getInfo().getKm();
+		}
+		
+		recorridoActual.remove(actual);
+		actual.setEstado("No Visitado");
+	}
+	
+	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
+		ArrayList<Aeropuerto> candidatos = new ArrayList<Aeropuerto>(aeropuertos);
+		
+		ArrayList<Aeropuerto> sol = new ArrayList<>();
+		sol.add(origen);
+		Aeropuerto actual = origen;
+		
+		while(sol.size() < candidatos && !solucion(sol, origen)) {
+			
+			Aeropuerto masCercano = seleccionar(candidatos, actual);
+			sol.add(masCercano);
+			actual = masCercano;
+		}
+		
+		return sol;
+	}
+	
 }
