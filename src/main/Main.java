@@ -94,13 +94,13 @@ public class Main {
 			break;
 		case 6:
 			System.out.println("---Probar Aeropuertos Greedy---");
-			System.out.println("Ingrese Pais Origen");
+			System.out.println("Ingrese Aeropuerto Origen");
 			String origen3 = insertarString();
 			probarAeropuertosGreedy(trivago,origen3);
 			break;
 		case 7:
 			System.out.println("---Probar Aeropuertos Backtracking---");
-			System.out.println("Ingrese Pais Origen");
+			System.out.println("Ingrese Aeropuerto Origen");
 			String origen4= insertarString();
 			probarAeropuertosBacktracking(trivago,origen4);
 			break;
@@ -295,7 +295,13 @@ public class Main {
 		}
 
 		public static void probarAeropuertosBacktracking(Sistema_aeropuertos trivago,String aeropuerto_origen){
-			System.out.println("Fuera de servicio");
+			ArrayList<Aeropuerto> resultado = trivago.visitAll(aeropuerto_origen);
+			if(!resultado.isEmpty())
+			for(int i = 0; i < resultado.size(); i++){
+				System.out.println(resultado.get(i));
+			}else{
+				System.out.println("No hay resultados.");
+			}
 		}
 
 		public static void probarAeropuertosGreedy(Sistema_aeropuertos trivago,String aeropuerto_origen){

@@ -163,18 +163,16 @@ public class Sistema_aeropuertos {
 		return aux;
 	}
 	
-	public ArrayList<Aeropuerto> visitAll(Aeropuerto origen){
+	public ArrayList<Aeropuerto> visitAll(String origen){
 		ArrayList<Aeropuerto> recorridoActual = new ArrayList<>();
 		ArrayList<Aeropuerto> recorridoMenor = new ArrayList<>();
 		double pesoActual = 0.0;
 		double pesoMenor = 0.0;
-		
+		Aeropuerto aeropuerto_origen = this.buscarAeropuerto(origen);
 		for (Aeropuerto a : aeropuertos) {
-			a.setEstado("No Visitado");			
+			a.setEstado("No Visitado");
 		}
-		
-		visit_back(recorridoActual, recorridoMenor, pesoActual, pesoMenor, origen, origen);
-		
+		visit_back(recorridoActual, recorridoMenor, pesoActual, pesoMenor, aeropuerto_origen, aeropuerto_origen);
 		return recorridoMenor;
 	}
 	
@@ -185,16 +183,17 @@ public class Sistema_aeropuertos {
 		for(Ruta r : actual.getRutas()) {
 			pesoActual = pesoActual + r.getInfo().getKm();
 			
-			if(r.getDestino().getNombre().equals(origen.getNombre())) {
-				
-				if(pesoActual < pesoMenor) {
-					pesoMenor = pesoActual;
-					recorridoMenor = recorridoActual;
+			if((r.getDestino().getNombre().equals(origen.getNombre()))) {
+				if(recorridoActual.size() == this.aeropuertos.size()){
+					if((pesoActual < pesoMenor)||(pesoMenor == 0.0)){
+						pesoMenor = pesoActual;
+						recorridoMenor.clear();
+						recorridoMenor.addAll(recorridoActual);
+					}
 				}
 			}
 			else {
 				if(r.getDestino().getEstado().equals("No Visitado")) {
-					
 					visit_back(recorridoActual, recorridoMenor, pesoActual, pesoMenor, r.getDestino(), origen);
 				}
 			}
@@ -205,7 +204,7 @@ public class Sistema_aeropuertos {
 		recorridoActual.remove(actual);
 		actual.setEstado("No Visitado");
 	}
-	
+/*
 	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
 		ArrayList<Aeropuerto> candidatos = new ArrayList<Aeropuerto>(aeropuertos);
 		
@@ -222,5 +221,5 @@ public class Sistema_aeropuertos {
 		
 		return sol;
 	}
-	
+*/
 }
