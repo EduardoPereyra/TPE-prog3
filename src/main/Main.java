@@ -19,7 +19,7 @@ import respuestas.VuelosSinAerolinea;
 
 public class Main {
 		//path de los archivos
-			static String path = "C:\\Users\\tutip\\Desktop\\Proyectos Java\\TPE-Prog3"; 
+			static String path = "C:\\Users\\tutip\\Documents\\0000TUDAI\\Proyectos Java\\TPE-Prog3";
 			//static String path = "C:\\Users\\ezequiel\\eclipse-workspace\\TPE-prog3";
 			
 			
@@ -31,8 +31,8 @@ public class Main {
 		readerRutas(trivago); //carga de rutas
 		readerReservas(trivago); //carga de reservas
 
-		int opcion = menu();
-		elegirOpcion(opcion,trivago); //menu
+		int option = menu();
+		elegirOpcion(option,trivago); //menu
 	}
 	
 	public static int menu() { //imprime el menu y se queda esperando a que el usuario ingrese una opcion
@@ -43,12 +43,14 @@ public class Main {
 		System.out.println("3- Servicio 1: Verificar vuelo directo.");
 		System.out.println("4- Servicio 2: Obtener vuelos sin aerolínea.");
 		System.out.println("5- Servicio 3: Vuelos disponibles directos.");
+		System.out.println("6- Probar Aeropuertos Greedy.");
+		System.out.println("7- Probar Aeropuertos Backtracking.");
 		System.out.println("0- Salir");
 		System.out.println("===================================\n\n");
         scanner = new Scanner(System.in);
-		int opcion;
-		opcion = scanner.nextInt();
-		return opcion;
+		int option;
+		option = scanner.nextInt();
+		return option;
 	}
 	
 	public static void elegirOpcion(int opcion, Sistema_aeropuertos trivago) { //mediante la opcion ingresada imprime y llama a la funcion correspondiente
@@ -89,6 +91,18 @@ public class Main {
 			System.out.println("Ingrese Pais Destino");
 			String destino2 = insertarString();
 			listarVuelosDirecto(trivago,origen2,destino2,"---Servicio 3: Vuelos disponibles directos---");
+			break;
+		case 6:
+			System.out.println("---Probar Aeropuertos Greedy---");
+			System.out.println("Ingrese Pais Origen");
+			String origen3 = insertarString();
+			probarAeropuertosGreedy(trivago,origen3);
+			break;
+		case 7:
+			System.out.println("---Probar Aeropuertos Backtracking---");
+			System.out.println("Ingrese Pais Origen");
+			String origen4= insertarString();
+			probarAeropuertosBacktracking(trivago,origen4);
 			break;
 		case 0:
 			System.out.println("---Salir---");
@@ -278,6 +292,14 @@ public class Main {
 				mensaje = "No hay vuelo directo.";
 			}
 			write(funcion,mensaje);
+		}
+
+		public static void probarAeropuertosBacktracking(Sistema_aeropuertos trivago,String aeropuerto_origen){
+			System.out.println("Fuera de servicio");
+		}
+
+		public static void probarAeropuertosGreedy(Sistema_aeropuertos trivago,String aeropuerto_origen){
+			System.out.println("Fuera de servicio");
 		}
 		
 		private static String insertarString() { //devuelve el string ingresado por el usuario

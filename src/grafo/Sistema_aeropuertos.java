@@ -151,4 +151,15 @@ public class Sistema_aeropuertos {
     	return salida; 
 	}
 
+	private Ruta getRuta(Aeropuerto aeropuerto_origen, Aeropuerto aeropuerto_destino){
+		Ruta aux;
+		for(int i = 0; i < aeropuerto_origen.getRutas().size(); i++){
+			aux = aeropuerto_origen.getRutas().get(i);
+			if(aux.getDestino().equals(aeropuerto_destino)) {
+				return aux;
+			}
+		}
+		aux = null;
+		return aux;
+	}
 }
