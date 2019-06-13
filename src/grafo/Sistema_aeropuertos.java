@@ -204,6 +204,36 @@ public class Sistema_aeropuertos {
 		recorridoActual.remove(actual);
 		actual.setEstado("No Visitado");
 	}
+	
+	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
+		for (Aeropuerto a : aeropuertos) {
+			a.setEstado("No Visitado");
+		}
+		ArrayList<Aeropuerto> sol = new ArrayList<>();
+		sol.add(origen);
+		Aeropuerto actual = origen;
+		
+		while(sol.size() < aeropuertos.size()) {
+			actual.setEstado("Visitado");
+			Aeropuerto masCercano = seleccionar(actual);
+			sol.add(masCercano);
+			actual = masCercano;
+		}
+		
+		return sol;
+	}
+	
+	private Aeropuerto seleccionar(Aeropuerto actual) {
+		double costo = Double.POSITIVE_INFINITY;
+		Aeropuerto masCercano = new Aeropuerto();
+		for(Ruta r : actual.getRutas()) {
+			if(r.getInfo().getKm() < costo && r.getDestino().getEstado().equals("No Visitado")) {
+				costo = r.getInfo().getKm();
+				masCercano = r.getDestino();
+			}
+		}
+		return masCercano;
+	}
 /*
 	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
 		ArrayList<Aeropuerto> candidatos = new ArrayList<Aeropuerto>(aeropuertos);
@@ -212,7 +242,7 @@ public class Sistema_aeropuertos {
 		sol.add(origen);
 		Aeropuerto actual = origen;
 		
-		while(sol.size() < candidatos && !solucion(sol, origen)) {
+		while(sol.size() < candidatos.size() && !solucion(sol, origen)) {
 			
 			Aeropuerto masCercano = seleccionar(candidatos, actual);
 			sol.add(masCercano);

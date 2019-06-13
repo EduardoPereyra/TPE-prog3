@@ -20,6 +20,13 @@ public class Aeropuerto {
 		this.ciudad = ciudad;
 	}
 	
+	public Aeropuerto() { //constructor 2
+		this.rutas = new ArrayList<Ruta>();
+		this.nombre = null;
+		this.pais = null;
+		this.ciudad = null;
+	}
+	
 	//funciones
 	public void addRuta(Ruta ruta) {
 		this.rutas.add(ruta);
