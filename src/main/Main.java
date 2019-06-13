@@ -120,7 +120,8 @@ public class Main {
 	}
 	
 	    public static void readerAeropuertos(Sistema_aeropuertos trivago){ //carga de aeropuertos
-	        String csvFile = path +"\\Aeropuertos.csv";
+	        //String csvFile = path +"\\Aeropuertos.csv";
+		    String csvFile = path +"\\Aeropuertos_greedy.csv";
 	        System.out.println(csvFile);
 	        String line = "";
 	        String cvsSplitBy = ";";
@@ -141,7 +142,8 @@ public class Main {
 	    }
 	    
 	    public static void readerRutas(Sistema_aeropuertos trivago){ //carga de rutas
-	        String csvFile = path +"\\Rutas.csv";
+	        //String csvFile = path +"\\Rutas.csv";
+		    String csvFile = path +"\\Rutas_greedy.csv";
 	        System.out.println(csvFile);
 	        String line = "";
 	        String cvsSplitBy = ";";
@@ -298,14 +300,20 @@ public class Main {
 			ArrayList<Aeropuerto> resultado = trivago.visitAll(aeropuerto_origen);
 			if(!resultado.isEmpty())
 			for(int i = 0; i < resultado.size(); i++){
-				System.out.println(resultado.get(i));
+				System.out.printf("%d - " + resultado.get(i) + "\n", i);
 			}else{
 				System.out.println("No hay resultados.");
 			}
 		}
 
 		public static void probarAeropuertosGreedy(Sistema_aeropuertos trivago,String aeropuerto_origen){
-			System.out.println("Fuera de servicio");
+			ArrayList<Aeropuerto> resultado = trivago.greedy(aeropuerto_origen);
+			if(!resultado.isEmpty())
+				for(int i = 0; i < resultado.size(); i++){
+					System.out.println(resultado.get(i));
+				}else{
+				System.out.println("No hay resultados.");
+			}
 		}
 		
 		private static String insertarString() { //devuelve el string ingresado por el usuario

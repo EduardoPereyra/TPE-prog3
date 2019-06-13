@@ -179,9 +179,8 @@ public class Sistema_aeropuertos {
 	private void visit_back(ArrayList<Aeropuerto> recorridoActual, ArrayList<Aeropuerto> recorridoMenor, double pesoActual, double pesoMenor, Aeropuerto actual, Aeropuerto origen) {
 		recorridoActual.add(actual);
 		actual.setEstado("Visitado");
-		
 		for(Ruta r : actual.getRutas()) {
-			pesoActual = pesoActual + r.getInfo().getKm();
+			pesoActual +=  r.getInfo().getKm();
 			
 			if((r.getDestino().getNombre().equals(origen.getNombre()))) {
 				if(recorridoActual.size() == this.aeropuertos.size()){
@@ -198,29 +197,30 @@ public class Sistema_aeropuertos {
 				}
 			}
 			
-			pesoActual = pesoActual - r.getInfo().getKm();
+			pesoActual -= r.getInfo().getKm();
 		}
 		
 		recorridoActual.remove(actual);
 		actual.setEstado("No Visitado");
 	}
 	
-	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
+	public ArrayList<Aeropuerto> greedy(String origen){
+		Aeropuerto aeropuerto_origen = this.buscarAeropuerto(origen);
 		for (Aeropuerto a : aeropuertos) {
 			a.setEstado("No Visitado");
 		}
-		ArrayList<Aeropuerto> sol = new ArrayList<>();
-		sol.add(origen);
-		Aeropuerto actual = origen;
+		ArrayList<Aeropuerto> solucion = new ArrayList<>();
+		solucion.add(aeropuerto_origen);
+		Aeropuerto actual = aeropuerto_origen;
 		
-		while(sol.size() < aeropuertos.size()) {
+		while(solucion.size() < aeropuertos.size()) {
 			actual.setEstado("Visitado");
 			Aeropuerto masCercano = seleccionar(actual);
-			sol.add(masCercano);
+			solucion.add(masCercano);
 			actual = masCercano;
 		}
 		
-		return sol;
+		return solucion;
 	}
 	
 	private Aeropuerto seleccionar(Aeropuerto actual) {
@@ -234,22 +234,4 @@ public class Sistema_aeropuertos {
 		}
 		return masCercano;
 	}
-/*
-	public ArrayList<Aeropuerto> greedyCrazy(Aeropuerto origen){
-		ArrayList<Aeropuerto> candidatos = new ArrayList<Aeropuerto>(aeropuertos);
-		
-		ArrayList<Aeropuerto> sol = new ArrayList<>();
-		sol.add(origen);
-		Aeropuerto actual = origen;
-		
-		while(sol.size() < candidatos.size() && !solucion(sol, origen)) {
-			
-			Aeropuerto masCercano = seleccionar(candidatos, actual);
-			sol.add(masCercano);
-			actual = masCercano;
-		}
-		
-		return sol;
-	}
-*/
 }
